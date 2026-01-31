@@ -25,10 +25,8 @@ async function getPost(id: string): Promise<Post | null> {
 
     if (error || !data) return null
 
-    // 디버깅: 서버에서 stickers/drawings 확인
-    console.log('[SERVER getPost] id:', id, 'stickers:', data.stickers?.length ?? 'undefined', 'drawings:', data.drawings?.length ?? 'undefined')
-
-    return data as Post
+    // JSON 직렬화를 통해 JSONB 필드가 클라이언트로 제대로 전달되도록 함
+    return JSON.parse(JSON.stringify(data)) as Post
   } catch {
     return null
   }
