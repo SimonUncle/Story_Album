@@ -14,21 +14,15 @@ interface AlbumRendererProps {
 }
 
 export default function AlbumRenderer({ post }: AlbumRendererProps) {
-  // 클라이언트에서 stickers/drawings를 별도로 로드
-  const [stickers, setStickers] = useState<Sticker[]>(post.stickers || [])
-  const [drawings, setDrawings] = useState<Stroke[]>(post.drawings || [])
+  // 클라이언트에서만 stickers/drawings 로드 (하이드레이션 에러 방지)
+  const [stickers, setStickers] = useState<Sticker[]>([])
+  const [drawings, setDrawings] = useState<Stroke[]>([])
+  const [mounted, setMounted] = useState(false)
 
-  // 서버에서 받은 데이터가 비어있으면 API로 다시 로드
   useEffect(() => {
-    async function loadDecorations() {
-      if ((post.stickers?.length || 0) > 0 || (post.drawings?.length || 0) > 0) {
-        // 서버에서 이미 데이터가 있으면 사용
-        setStickers(post.stickers || [])
-        setDrawings(post.drawings || [])
-        return
-      }
+    setMounted(true)
 
-      // 서버 데이터가 비어있으면 API로 로드
+    async function loadDecorations() {
       try {
         const res = await fetch(`/api/get-post?id=${post.id}`)
         if (res.ok) {
@@ -41,7 +35,7 @@ export default function AlbumRenderer({ post }: AlbumRendererProps) {
       }
     }
     loadDecorations()
-  }, [post.id, post.stickers, post.drawings])
+  }, [post.id])
 
   const {
     image_urls,
@@ -129,8 +123,8 @@ export default function AlbumRenderer({ post }: AlbumRendererProps) {
   return (
     <article className="w-full relative">
       {edit_plan.map((block, index) => renderBlock(block, index))}
-      {/* v3: 스티커 & 그리기 오버레이 */}
-      <DecorationOverlay stickers={stickers} drawings={drawings} />
+      {/* v3: 스티커 & 그리기 오버레이 - 클라이언트에서만 렌더링 */}
+      {mounted && <DecorationOverlay stickers={stickers} drawings={drawings} />}
     </article>
   )
 }
