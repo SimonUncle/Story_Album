@@ -6,6 +6,9 @@ import AlbumRenderer from '@/components/album/AlbumRenderer'
 import CopyLinkButton from './CopyLinkButton'
 import type { Post } from '@/lib/types'
 
+// 캐시 비활성화 - 항상 최신 데이터 가져오기
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ id: string }>
 }
