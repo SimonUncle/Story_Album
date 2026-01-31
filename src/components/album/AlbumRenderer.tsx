@@ -1,6 +1,7 @@
 'use client'
 
-import type { Post, AlbumBlock, MediaItem, Subtitle, FilterType } from '@/lib/types'
+import { useEffect, useState } from 'react'
+import type { Post, AlbumBlock, MediaItem, Subtitle, FilterType, Sticker, Stroke } from '@/lib/types'
 import HeroBlock from './HeroBlock'
 import ImageBlock from './ImageBlock'
 import TextSlotBlock from './TextSlotBlock'
@@ -13,8 +14,34 @@ interface AlbumRendererProps {
 }
 
 export default function AlbumRenderer({ post }: AlbumRendererProps) {
-  // 디버깅: 클라이언트에서 받은 stickers/drawings 확인
-  console.log('[CLIENT AlbumRenderer] stickers:', post.stickers, 'drawings:', post.drawings)
+  // 클라이언트에서 stickers/drawings를 별도로 로드
+  const [stickers, setStickers] = useState<Sticker[]>(post.stickers || [])
+  const [drawings, setDrawings] = useState<Stroke[]>(post.drawings || [])
+
+  // 서버에서 받은 데이터가 비어있으면 API로 다시 로드
+  useEffect(() => {
+    async function loadDecorations() {
+      if ((post.stickers?.length || 0) > 0 || (post.drawings?.length || 0) > 0) {
+        // 서버에서 이미 데이터가 있으면 사용
+        setStickers(post.stickers || [])
+        setDrawings(post.drawings || [])
+        return
+      }
+
+      // 서버 데이터가 비어있으면 API로 로드
+      try {
+        const res = await fetch(`/api/get-post?id=${post.id}`)
+        if (res.ok) {
+          const data = await res.json()
+          setStickers(data.post.stickers || [])
+          setDrawings(data.post.drawings || [])
+        }
+      } catch (error) {
+        console.error('Failed to load decorations:', error)
+      }
+    }
+    loadDecorations()
+  }, [post.id, post.stickers, post.drawings])
 
   const {
     image_urls,
@@ -25,9 +52,6 @@ export default function AlbumRenderer({ post }: AlbumRendererProps) {
     media_items,
     subtitles,
     filter,
-    // v3 fields
-    stickers,
-    drawings,
   } = post
 
   // v2: 미디어 아이템 또는 레거시 이미지 URL 사용
