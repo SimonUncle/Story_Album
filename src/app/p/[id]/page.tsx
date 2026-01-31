@@ -24,6 +24,10 @@ async function getPost(id: string): Promise<Post | null> {
       .single()
 
     if (error || !data) return null
+
+    // 디버깅: 서버에서 stickers/drawings 확인
+    console.log('[SERVER getPost] id:', id, 'stickers:', data.stickers?.length ?? 'undefined', 'drawings:', data.drawings?.length ?? 'undefined')
+
     return data as Post
   } catch {
     return null

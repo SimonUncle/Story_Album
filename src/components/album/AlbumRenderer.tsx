@@ -13,6 +13,9 @@ interface AlbumRendererProps {
 }
 
 export default function AlbumRenderer({ post }: AlbumRendererProps) {
+  // 디버깅: 클라이언트에서 받은 stickers/drawings 확인
+  console.log('[CLIENT AlbumRenderer] stickers:', post.stickers, 'drawings:', post.drawings)
+
   const {
     image_urls,
     edit_plan,
