@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { createServerClient } from '@/lib/supabase/server'
+import Header from '@/components/Header'
 
 export const revalidate = 60 // 1분마다 재검증
 
@@ -25,6 +26,8 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
+      <Header />
+
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center min-h-[80vh] px-6 text-center">
         <h1 className="album-title text-4xl md:text-6xl lg:text-7xl font-medium text-foreground mb-6">

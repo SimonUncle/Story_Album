@@ -44,6 +44,9 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServerClient()
 
+    // 현재 로그인한 사용자 확인 (선택적)
+    const { data: { user } } = await supabase.auth.getUser()
+
     // 포스트 생성 (v2 필드 포함)
     const { data, error } = await supabase
       .from('posts')
@@ -61,6 +64,8 @@ export async function POST(request: NextRequest) {
         media_items: mediaItems || [],
         subtitles: subtitles || [],
         filter: filter || 'none',
+        // 로그인한 경우 user_id 저장
+        user_id: user?.id || null,
       })
       .select('id')
       .single()
