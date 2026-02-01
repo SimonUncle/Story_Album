@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createRouteHandlerClient } from '@/lib/supabase/server'
 import type { MediaItem } from '@/lib/types'
 
 // 지원하는 미디어 타입
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = createServerClient()
+    const supabase = createRouteHandlerClient(request)
     const mediaItems: MediaItem[] = []
 
     for (let i = 0; i < files.length; i++) {

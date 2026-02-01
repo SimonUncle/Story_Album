@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createRouteHandlerClient } from '@/lib/supabase/server'
 import type { Sticker, Stroke } from '@/lib/types'
 
 interface UpdateDecorationsRequest {
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = createServerClient()
+    const supabase = createRouteHandlerClient(request)
 
     // 포스트 업데이트
     const { error } = await supabase

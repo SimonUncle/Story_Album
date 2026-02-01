@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createRouteHandlerClient } from '@/lib/supabase/server'
 import type { CreatePostRequest } from '@/lib/types'
 
 export async function POST(request: NextRequest) {
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = createServerClient()
+    const supabase = createRouteHandlerClient(request)
 
     // 현재 로그인한 사용자 확인 (선택적)
     const { data: { user } } = await supabase.auth.getUser()
