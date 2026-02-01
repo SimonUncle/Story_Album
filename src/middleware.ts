@@ -37,7 +37,11 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // API 라우트와 정적 파일 제외
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    // 페이지 라우트만 처리 (정적 파일, API 제외)
+    '/',
+    '/my',
+    '/create',
+    '/auth/:path*',
+    '/p/:path*',
   ],
 }
