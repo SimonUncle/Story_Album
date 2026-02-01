@@ -188,11 +188,11 @@ export default function EditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className={`min-h-screen bg-background ${editMode === 'drawing' ? 'drawing-active' : ''}`}>
       {/* 앨범 영역 */}
       <div
         ref={containerRef}
-        className="pb-48 relative"
+        className={`pb-48 relative ${editMode === 'drawing' ? 'drawing-active' : ''}`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragEnter={(e) => e.preventDefault()}

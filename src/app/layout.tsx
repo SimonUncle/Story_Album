@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Playfair_Display, Gowun_Dodum } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import './globals.css'
@@ -22,6 +22,13 @@ const gowunDodum = Gowun_Dodum({
   variable: '--font-handwriting',
   display: 'swap',
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
 
 export const metadata: Metadata = {
   title: 'Story Album - 여행의 순간을 앨범으로',

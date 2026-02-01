@@ -79,3 +79,12 @@ body {
     background-position: -200% 0;
   }
 }
+
+/* 모바일 드로잉/스티커 편집 시 터치 동작 최적화 */
+.drawing-active {
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
